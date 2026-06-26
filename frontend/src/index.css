@@ -1,0 +1,140 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #0f5bff;
+  --primary-dark: #0a3cb5;
+  --primary-light: #4a8dff;
+  --secondary: #00d084;
+  --dark: #0a0e27;
+  --dark-gray: #1a1f3a;
+  --light-gray: #f0f3ff;
+  --light: #ffffff;
+  --border: #e5e7ff;
+  --text-primary: #0a0e27;
+  --text-secondary: #6b7280;
+  --text-light: #9ca3af;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f3ff 0%, #f9fbff 50%, #f0f3ff 100%);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+.app-page {
+  min-height: 100vh;
+  padding: 120px 24px 60px;
+  background: linear-gradient(135deg, #f0f3ff 0%, #fafbff 100%);
+}
+
+.app-container {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+}
+
+.brand-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 35px rgba(15, 91, 255, 0.08);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.brand-card:hover {
+  box-shadow: 0 20px 50px rgba(15, 91, 255, 0.12);
+  border-color: var(--primary);
+}
+
+.brand-logo-mark {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(15, 91, 255, 0.2);
+}
+
+.person-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--light);
+  box-shadow: 0 8px 20px rgba(15, 91, 255, 0.15);
+}
+
+.feature-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 12px 32px rgba(15, 91, 255, 0.12);
+}
+
+@media (max-width: 768px) {
+  .app-page {
+    padding: 100px 16px 48px;
+  }
+
+  .brand-logo-mark {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
