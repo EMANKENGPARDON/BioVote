@@ -1,5 +1,9 @@
 const Candidate = require("../models/candidate");
 const Election = require("../models/Election");
+const {
+  attachComputedVoteCounts,
+  sortByComputedVoteCount,
+} = require("../utils/candidateVoteCounts");
 
 // Register Candidate
 const createCandidate = async (req, res) => {
@@ -37,8 +41,9 @@ const getCandidates = async (req, res) => {
       ? { municipality: String(req.query.municipality).trim() }
       : {};
     const candidates = await Candidate.find(filter).lean();
+    const candidatesWithVoteCounts = await attachComputedVoteCounts(candidates);
 
-    res.status(200).json(candidates);
+    res.status(200).json(candidatesWithVoteCounts);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -48,9 +53,9 @@ const getCandidates = async (req, res) => {
 
 const getResults = async (req, res) => {
   try {
-    const [election, results] = await Promise.all([
+    const [election, candidates] = await Promise.all([
       Election.findOne().sort({ createdAt: -1 }).lean(),
-      Candidate.find().sort({ voteCount: -1 }).lean(),
+      Candidate.find().lean(),
     ]);
 
     if (!election || election.status !== "Closed") {
@@ -59,6 +64,10 @@ const getResults = async (req, res) => {
         election,
       });
     }
+
+    const results = sortByComputedVoteCount(
+      await attachComputedVoteCounts(candidates)
+    );
 
     res.status(200).json(results);
   } catch (error) {
@@ -70,10 +79,13 @@ const getResults = async (req, res) => {
 
 const updateCandidate = async (req, res) => {
   try {
-    const candidate = await Candidate.findByIdAndUpdate(req.params.id, req.body, {
+    const candidateUpdates = { ...req.body };
+    delete candidateUpdates.voteCount;
+
+    const candidate = await Candidate.findByIdAndUpdate(req.params.id, candidateUpdates, {
       new: true,
       runValidators: true,
-    });
+    }).lean();
 
     if (!candidate) {
       return res.status(404).json({
@@ -81,7 +93,9 @@ const updateCandidate = async (req, res) => {
       });
     }
 
-    res.status(200).json(candidate);
+    const [candidateWithVoteCounts] = await attachComputedVoteCounts([candidate]);
+
+    res.status(200).json(candidateWithVoteCounts);
   } catch (error) {
     res.status(500).json({
       message: error.message,

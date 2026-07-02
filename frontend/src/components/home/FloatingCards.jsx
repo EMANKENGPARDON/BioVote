@@ -41,6 +41,10 @@ function FloatingCards() {
     0
   );
 
+  const rankedCandidates = [...candidates]
+    .sort((a, b) => (b.voteCount || 0) - (a.voteCount || 0))
+    .slice(0, 3);
+
   const turnout =
     voters.length > 0 ? ((totalVotes / voters.length) * 100).toFixed(1) : 0;
 
@@ -167,9 +171,18 @@ function FloatingCards() {
               Candidate Rankings
             </Typography>
 
-            <Ranking name="CPDM" votes="120" image={people[1]} />
-            <Ranking name="SDF" votes="80" image={people[2]} />
-            <Ranking name="PCRN" votes="45" image={people[0]} />
+            {rankedCandidates.length > 0 ? (
+              rankedCandidates.map((candidate, index) => (
+                <Ranking
+                  key={candidate._id}
+                  name={candidate.politicalParty || candidate.fullName}
+                  votes={candidate.voteCount || 0}
+                  image={candidate.photo || people[index % people.length]}
+                />
+              ))
+            ) : (
+              <Typography color="#626a86">No candidates registered yet.</Typography>
+            )}
           </CardContent>
         </Card>
       </motion.div>

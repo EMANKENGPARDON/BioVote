@@ -340,22 +340,43 @@ function Verification() {
                   >
                     <Box>
                       <Typography fontWeight={900} color="#08295c" mb={1}>
-                        Live Camera
+                        {capturedImage ? "Live Capture" : "Live Camera"}
                       </Typography>
                       <Box
-                        component="video"
-                        ref={videoRef}
-                        autoPlay
-                        muted
-                        playsInline
                         sx={{
                           width: "100%",
                           aspectRatio: "4 / 3",
                           background: "#dbe7ff",
                           borderRadius: "12px",
-                          objectFit: "cover",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          overflow: "hidden",
                         }}
-                      />
+                      >
+                        <Box
+                          component="video"
+                          ref={videoRef}
+                          autoPlay
+                          muted
+                          playsInline
+                          sx={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            display: cameraOpen && !capturedImage ? "block" : "none",
+                          }}
+                        />
+                        {capturedImage && (
+                          <Box
+                            component="img"
+                            src={capturedImage}
+                            alt="Captured live face"
+                            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          />
+                        )}
+                        {!capturedImage && !cameraOpen && <XCircle color="#8ba1c4" />}
+                      </Box>
                     </Box>
                     <Box>
                       <Typography fontWeight={900} color="#08295c" mb={1}>

@@ -31,11 +31,6 @@ const candidateSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-
-    voteCount: {
-      type: Number,
-      default: 0,
-    },
   },
   {
     timestamps: true,
@@ -43,6 +38,5 @@ const candidateSchema = new mongoose.Schema(
 );
 
 candidateSchema.index({ municipality: 1 });
-candidateSchema.index({ voteCount: -1 });
 
 module.exports = mongoose.model("Candidate", candidateSchema);

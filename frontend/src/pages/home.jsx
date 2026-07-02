@@ -8,32 +8,26 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BadgeCheck, Camera, Database, FileCheck2, ShieldCheck } from "lucide-react";
-import logo from "../assets/biovote-logo.png";
+import {
+  BadgeCheck,
+  Fingerprint,
+  Hash,
+  Link2,
+  Mail,
+  MapPin,
+  ShieldCheck,
+  UserCheck,
+} from "lucide-react";
 import faceImage from "../assets/face-verification-authentication.jfif";
 
 function Home() {
-  const steps = [
-    {
-      icon: <FileCheck2 size={26} />,
-      title: "Register",
-      text: "Eligible residents submit identity details and a face image.",
-    },
-    {
-      icon: <Camera size={26} />,
-      title: "Verify",
-      text: "Face recognition confirms the voter before ballot access.",
-    },
-    {
-      icon: <BadgeCheck size={26} />,
-      title: "Vote Once",
-      text: "The platform prevents duplicate voting through voter status checks.",
-    },
-    {
-      icon: <Database size={26} />,
-      title: "Audit",
-      text: "Each vote creates a blockchain audit record for transparency.",
-    },
+  const securityFeatures = [
+    { icon: <UserCheck size={20} />, label: "Unique voter identification" },
+    { icon: <Mail size={20} />, label: "Email-based login" },
+    { icon: <Fingerprint size={20} />, label: "Facial recognition" },
+    { icon: <BadgeCheck size={20} />, label: "One-vote enforcement" },
+    { icon: <Hash size={20} />, label: "SHA-256 hashing" },
+    { icon: <Link2 size={20} />, label: "Linked blockchain audit logs" },
   ];
 
   return (
@@ -54,23 +48,6 @@ function Home() {
             }}
           >
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
-                <Box
-                  component="img"
-                  src={logo}
-                  alt="BioVote logo"
-                  sx={{ width: 58, height: 58, borderRadius: "14px", objectFit: "cover" }}
-                />
-                <Box>
-                  <Typography color="#0f5bff" fontWeight={900} fontSize="1.1rem">
-                    BioVote Municipal Elections
-                  </Typography>
-                  <Typography color="#5f759b" fontWeight={700} fontSize="0.85rem">
-                    Secure public voting and audit management
-                  </Typography>
-                </Box>
-              </Box>
-
               <Typography
                 component="h1"
                 sx={{
@@ -160,82 +137,122 @@ function Home() {
       </Box>
 
       <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 } }}>
-        <Box sx={{ mb: 5 }}>
-          <Typography component="h2" fontWeight={900} color="#08295c" fontSize="2rem">
-            About BioVote
-          </Typography>
-          <Typography color="#506784" sx={{ maxWidth: 850, mt: 1.5, lineHeight: 1.8 }}>
-            BioVote is a final year project designed as a professional municipal
-            election management system. It combines voter registration, biometric
-            authentication, controlled election status, vote recording, analytics,
-            and blockchain logs in one workflow.
-          </Typography>
-        </Box>
-
-        <Typography component="h2" fontWeight={900} color="#08295c" fontSize="2rem" mb={3}>
-          How It Works
-        </Typography>
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
-            gap: 2.5,
+            gridTemplateColumns: { xs: "1fr", md: "0.9fr 1.1fr" },
+            gap: 3,
+            alignItems: "stretch",
           }}
         >
-          {steps.map((step) => (
-            <Card key={step.title} sx={{ border: "1px solid #dbe7ff", borderRadius: "12px" }}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ color: "#0f5bff", mb: 2 }}>{step.icon}</Box>
-                <Typography fontWeight={900} color="#08295c" mb={1}>
-                  {step.title}
-                </Typography>
-                <Typography color="#5f759b" fontSize="0.95rem" lineHeight={1.7}>
-                  {step.text}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
-
-        <Card sx={{ mt: 5, borderRadius: "12px", border: "1px solid #dbe7ff" }}>
-          <CardContent sx={{ p: { xs: 3, md: 4 }, display: "flex", gap: 2 }}>
-            <ShieldCheck color="#0f5bff" />
-            <Box>
-              <Typography fontWeight={900} color="#08295c">
+          <Card
+            sx={{
+              borderRadius: "16px",
+              border: "1px solid #dbe7ff",
+              background: "linear-gradient(135deg, #0f5bff 0%, #0a3cb5 100%)",
+              color: "#fff",
+            }}
+          >
+            <CardContent sx={{ p: { xs: 3, md: 4 }, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <ShieldCheck size={32} />
+              <Typography fontWeight={900} fontSize="1.3rem" mt={2}>
                 Results are intentionally delayed
               </Typography>
-              <Typography color="#506784" mt={0.5}>
+              <Typography sx={{ opacity: 0.9, mt: 1, lineHeight: 1.8 }}>
                 Public results become available only after an administrator closes
-                the election.
+                the election, protecting the integrity of the vote until it ends.
+              </Typography>
+            </CardContent>
+          </Card>
+
+          <Card sx={{ borderRadius: "16px", border: "1px solid #dbe7ff" }}>
+            <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+              <Typography fontWeight={900} color="#08295c" fontSize="1.3rem" mb={2.5}>
+                Security Features
+              </Typography>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" },
+                  gap: 2,
+                }}
+              >
+                {securityFeatures.map((feature) => (
+                  <Box
+                    key={feature.label}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      p: 1.5,
+                      borderRadius: "10px",
+                      background: "#f4f8ff",
+                      border: "1px solid #e6eeff",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        color: "#0f5bff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: 34,
+                        height: 34,
+                        borderRadius: "8px",
+                        background: "#e6eeff",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {feature.icon}
+                    </Box>
+                    <Typography color="#334467" fontWeight={600} fontSize="0.9rem">
+                      {feature.label}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+
+        <Card sx={{ mt: 3, borderRadius: "16px", border: "1px solid #dbe7ff" }}>
+          <CardContent
+            sx={{
+              p: { xs: 3, md: 4 },
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "flex-start", sm: "center" },
+              justifyContent: "space-between",
+              gap: 2.5,
+              flexWrap: "wrap",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+              <MapPin color="#0f5bff" size={20} />
+              <Typography color="#334467" fontWeight={600}>
+                Municipal Election Office
               </Typography>
             </Box>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ mt: 3, borderRadius: "12px", border: "1px solid #dbe7ff" }}>
-          <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-            <Typography fontWeight={900} color="#08295c" fontSize="1.5rem">
-              Security Features
-            </Typography>
-            <Typography color="#506784" mt={1} lineHeight={1.8}>
-              Unique voter identification, email-based login, facial recognition,
-              one-vote enforcement, SHA256 hashing, and linked blockchain audit logs.
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ mt: 3, borderRadius: "12px", border: "1px solid #dbe7ff" }}>
-          <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-            <Typography fontWeight={900} color="#08295c" fontSize="1.5rem">
-              Contact Information
-            </Typography>
-            <Typography color="#506784" mt={1} lineHeight={1.8}>
-              Municipal Election Office | support@biovote.local | Admin access:
-              {" "}
-              <Box component={Link} to="/admin/login" sx={{ color: "#0f5bff", fontWeight: 900 }}>
-                Election Administrator Login
-              </Box>
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+              <Mail color="#0f5bff" size={20} />
+              <Typography color="#334467" fontWeight={600}>
+                support@biovote.local
+              </Typography>
+            </Box>
+            <Box
+              component={Link}
+              to="/admin/login"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                color: "#0f5bff",
+                fontWeight: 900,
+                textDecoration: "none",
+              }}
+            >
+              Election Administrator Login →
+            </Box>
           </CardContent>
         </Card>
       </Container>

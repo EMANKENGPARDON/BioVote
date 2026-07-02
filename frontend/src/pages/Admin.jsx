@@ -15,7 +15,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { BarChart3, Database, Play, Square, Trash2 } from "lucide-react";
+import { BarChart3, Database, Play, Square, Trash2, Upload } from "lucide-react";
 import { WORKFLOW_KEYS } from "../utils/workflowSession";
 
 const initialElection = {
@@ -194,6 +194,21 @@ function Admin() {
     }
   };
 
+  const uploadCandidatePhoto = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setCandidateForm((currentForm) => ({
+        ...currentForm,
+        photo: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+    event.target.value = "";
+  };
+
   const editCandidate = (candidate) => {
     setEditingCandidateId(candidate._id);
     setCandidateForm({
@@ -248,7 +263,7 @@ function Admin() {
 
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(4, 1fr)" }, gap: 2, mb: 3 }}>
           {metrics.map(([label, value]) => (
-            <Card key={label} sx={{ borderRadius: "12px", border: "1px solid #dbe7ff" }}>
+            <Card key={label} sx={{ borderRadius: "12px", border: "1px solid #0746c4" }}>
               <CardContent>
                 <Typography color="#506784" fontWeight={800}>{label}</Typography>
                 <Typography color="#08295c" fontWeight={900} fontSize="2rem">{value}</Typography>
@@ -289,7 +304,7 @@ function Admin() {
           <Card
   sx={{
     borderRadius: "16px",
-    border: "1px solid #dbe7ff",
+    border: "1px solid #2d3bb9",
     mt: 3,
   }}
 >
@@ -314,7 +329,7 @@ function Admin() {
           sx={{
             mb: 3,
             p: 2,
-            border: "1px solid #dbe7ff",
+            border: "1px solid #aec0e4",
             borderRadius: "12px",
           }}
         >
@@ -406,7 +421,7 @@ function Admin() {
   </CardContent>
 </Card>
 
-          <Card sx={{ borderRadius: "12px", border: "1px solid #dbe7ff" }}>
+          <Card sx={{ borderRadius: "12px", border: "1px solid #3267d1" }}>
             <CardContent sx={{ p: 3 }}>
               <Typography fontWeight={900} color="#08295c" fontSize="1.4rem" mb={2}>
                 Manage Candidates
@@ -416,7 +431,28 @@ function Admin() {
                 <TextField label="Party" value={candidateForm.politicalParty} onChange={(e) => setCandidateForm({ ...candidateForm, politicalParty: e.target.value })} />
                 <TextField label="Position" value={candidateForm.position} onChange={(e) => setCandidateForm({ ...candidateForm, position: e.target.value })} />
                 <TextField label="Municipality" value={candidateForm.municipality} onChange={(e) => setCandidateForm({ ...candidateForm, municipality: e.target.value })} />
-                <TextField label="Photo URL or Base64" value={candidateForm.photo} onChange={(e) => setCandidateForm({ ...candidateForm, photo: e.target.value })} sx={{ gridColumn: { sm: "1 / -1" } }} />
+                <Box sx={{ gridColumn: { sm: "1 / -1" }, display: "grid", gap: 1.5 }}>
+                  <TextField label="Photo URL or uploaded image" value={candidateForm.photo} onChange={(e) => setCandidateForm({ ...candidateForm, photo: e.target.value })} />
+                  <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
+                    <Button
+                      variant="outlined"
+                      component="label"
+                      startIcon={<Upload size={16} />}
+                      sx={{ borderRadius: "10px", fontWeight: 900, textTransform: "none" }}
+                    >
+                      Upload Photo
+                      <input hidden accept="image/*" type="file" onChange={uploadCandidatePhoto} />
+                    </Button>
+                    {candidateForm.photo && (
+                      <Avatar
+                        src={candidateForm.photo}
+                        alt="Candidate preview"
+                        variant="rounded"
+                        sx={{ width: 64, height: 64, border: "1px solid #dbe7ff" }}
+                      />
+                    )}
+                  </Box>
+                </Box>
                 <TextField multiline rows={3} label="Manifesto" value={candidateForm.manifesto} onChange={(e) => setCandidateForm({ ...candidateForm, manifesto: e.target.value })} sx={{ gridColumn: { sm: "1 / -1" } }} />
               </Box>
               <Button variant="contained" onClick={saveCandidate} sx={{ mt: 2, borderRadius: "10px", fontWeight: 900, textTransform: "none" }}>

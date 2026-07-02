@@ -2,6 +2,10 @@ const Vote = require("../models/Vote");
 const Voter = require("../models/voter");
 const Candidate = require("../models/candidate");
 const Election = require("../models/Election");
+const {
+  attachComputedVoteCounts,
+  sortByComputedVoteCount,
+} = require("../utils/candidateVoteCounts");
 
 const {
   createBlock,
@@ -20,17 +24,18 @@ const castVote = async (req, res) => {
       candidateId,
     } = req.body;
 
-    const [voter, election, candidate] = await Promise.all([
+    const [voter, election, candidate, existingVote] = await Promise.all([
       Voter.findById(voterId),
       Election.findOne({ status: "Active" }).sort({ createdAt: -1 }).lean(),
       Candidate.findById(candidateId),
+      Vote.findOne({ voterId }).lean(),
     ]);
 
     if (!voter) {
       return res.status(404).json({ message: "Voter not found" });
     }
 
-    if (voter.hasVoted) {
+    if (voter.hasVoted || existingVote) {
       return res.status(400).json({ message: "You have already voted" });
     }
 
@@ -56,11 +61,10 @@ const castVote = async (req, res) => {
         transactionId,
       });
 
-    // UPDATE CANDIDATE + MARK VOTER AS VOTED (parallel)
+    // MARK VOTER AS VOTED
 
-    candidate.voteCount += 1;
     voter.hasVoted = true;
-    await Promise.all([candidate.save(), voter.save()]);
+    await voter.save();
 
     // CREATE BLOCKCHAIN RECORD
 
@@ -99,6 +103,11 @@ const castVote = async (req, res) => {
     });
 
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "You have already voted",
+      });
+    }
 
     res.status(500).json({
       message:
@@ -110,11 +119,15 @@ const castVote = async (req, res) => {
 
 const getVoteAnalytics = async (req, res) => {
   try {
-    const [totalRegisteredVoters, totalVotes, candidateRankings] = await Promise.all([
+    const [totalRegisteredVoters, totalVotes, candidates] = await Promise.all([
       Voter.countDocuments(),
       Vote.countDocuments(),
-      Candidate.find().sort({ voteCount: -1 }).lean(),
+      Candidate.find().lean(),
     ]);
+
+    const candidateRankings = sortByComputedVoteCount(
+      await attachComputedVoteCounts(candidates)
+    );
 
     const turnout =
       totalRegisteredVoters > 0

@@ -29,8 +29,8 @@ function AdminLogin() {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", background: "#f4f8ff", px: 2, py: { xs: 6, md: 9 } }}>
-      <Card sx={{ maxWidth: 520, mx: "auto", borderRadius: "14px", border: "1px solid #dbe7ff" }}>
+    <Box sx={{ minHeight: "100vh", background: "#b6c4dd", px: 2, py: { xs: 6, md: 9 } }}>
+      <Card sx={{ maxWidth: 520, mx: "auto", borderRadius: "14px", border: "1px solid #0c55e7" }}>
         <CardContent sx={{ p: { xs: 3, md: 5 } }}>
           <Typography component="h1" fontSize="2rem" fontWeight={900} color="#08295c">
             Admin Login

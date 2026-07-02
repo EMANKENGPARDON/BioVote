@@ -63,7 +63,7 @@ function Dashboard() {
   const totalVotes =
     candidates.reduce(
       (sum, candidate) =>
-        sum + candidate.voteCount,
+        sum + (candidate.voteCount || 0),
       0
     );
 
@@ -85,7 +85,7 @@ function Dashboard() {
       name:
         candidate.politicalParty,
       votes:
-        candidate.voteCount,
+        candidate.voteCount || 0,
     }));
 
   return (
@@ -224,7 +224,7 @@ sx={{
        {[...candidates]
         .sort(
         (a, b) =>
-          b.voteCount - a.voteCount
+          (b.voteCount || 0) - (a.voteCount || 0)
       )
       .map((candidate, index) => (
         <Box
@@ -261,7 +261,7 @@ sx={{
             fontWeight="bold"
             color="#3239b7"
           >
-            {candidate.voteCount} votes
+            {candidate.voteCount || 0} votes
           </Typography>
         </Box>
       ))}
